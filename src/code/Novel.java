@@ -6,7 +6,7 @@
  * @version 1.0
  */
 
-public class Novel{
+public class Novel extends Literature{
     private final String title;
     private final String authorName;
     private final int yearPublished;
@@ -32,6 +32,7 @@ public class Novel{
      * Accessor for the title of the novel.
      * @return title
      */
+    @Override
     public String getTitle() {
         return title;
     }

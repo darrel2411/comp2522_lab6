@@ -16,11 +16,10 @@ import java.util.Scanner;
  * @author Manases Villalobos
  * @version 1.0
  */
-public class BookStore {
+public class BookStore <T extends Literature>
+{
     private final String name;
-    private final List<Novel> novels;
-    private final Map<String, Novel> novelMap;
-    private final Set<String> keys;
+    private final List<T> items;
 
     private static final int END_DECADE = 9;
     private static final int MAX_PERCENTAGE = 100;
@@ -43,34 +42,15 @@ public class BookStore {
      * @param name the name of the bookstore
      * @throws IllegalArgumentException if the provided name is blank or empty
      */
-    public BookStore(final String name) {
+    public BookStore(final String name)
+    {
         validateName(name);
 
         final List<String> keyList ;
 
-
         this.name = name;
-        this.novels = new ArrayList<>();
-        this.novelMap = new HashMap<>();
+        this.items = new ArrayList<>();
 
-        populateNovels(this.novels);
-
-        // Part 2
-        createMap(this.novels);
-        this.keys = novelMap.keySet();
-        printTitlesAndClean(this.keys, SPECIAL_WORD);
-        keyList = new ArrayList<>(keys);
-        // Step 3: Sort the List
-        Collections.sort(keyList);
-
-        // Printing the new list
-        System.out.println("Printing list sorted and without the word \"" +
-                            SPECIAL_WORD + "\"");
-        System.out.println();
-        for (final String key : keyList) {
-            System.out.println(this.novelMap.get(key));
-            System.out.println();
-        }
 
     }
 
@@ -82,29 +62,29 @@ public class BookStore {
      * @param Keys representing the keys
      * @param specialWords as a String
      */
-    private void printTitlesAndClean(final Set<String> keys,
-                                     final String specialWord)
-    {
-        final Iterator<String> iterator;
-        iterator = this.keys.iterator();
-
-        System.out.println("All novel titles:");
-
-        while (iterator.hasNext())
-        {
-            final String key;
-            key = iterator.next();
-            System.out.println(key);
-
-            if(key.contains(specialWord))
-            {
-                iterator.remove();
-            }
-
-        }
-
-        System.out.println();
-    }
+//    private void printTitlesAndClean(final Set<String> keys,
+//                                     final String specialWord)
+//    {
+//        final Iterator<String> iterator;
+//        iterator = this.keys.iterator();
+//
+//        System.out.println("All novel titles:");
+//
+//        while (iterator.hasNext())
+//        {
+//            final String key;
+//            key = iterator.next();
+//            System.out.println(key);
+//
+//            if(key.contains(specialWord))
+//            {
+//                iterator.remove();
+//            }
+//
+//        }
+//
+//        System.out.println();
+//    }
 
 
     /*
@@ -112,17 +92,17 @@ public class BookStore {
      * as a key and the novel as the value.
      * @param novels as a List of novels.
      */
-    private void createMap(final List<Novel> novels) {
-        validateNovelList(novels);
-        for(final Novel novel : novels) {
-            final String title;
-
-            // Gets the title of the novel
-            title = novel.getTitle();
-
-            this.novelMap.put(title, novel);
-        }
-    }
+//    private void createMap(final List<Novel> novels) {
+//        validateNovelList(novels);
+//        for(final Novel novel : novels) {
+//            final String title;
+//
+//            // Gets the title of the novel
+//            title = novel.getTitle();
+//
+//            this.novelMap.put(title, novel);
+//        }
+//    }
 
     /*
      * Validates the bookstore's name.
@@ -137,9 +117,33 @@ public class BookStore {
     /*
      * Throw new IllegalArgumentException if novel is empty or equals to null value.
      */
-    private void validateNovelList(final List<Novel> novels) {
+    private void validateNovelList(final List<T> novels) {
         if (novels == null || novels.isEmpty()) {
             throw new IllegalArgumentException("Novel list is empty!");
+        }
+    }
+
+    /**
+     * It adds different literature types
+     * to the items list.
+     * @param item generic type so it can accept
+     *             a novel, comic book, or magazine.
+     */
+    public void addItem(final T item) {
+        items.add(item);
+    }
+
+    /**
+     * prints al the items in the list of items.
+     */
+    public void printItems(){
+        int counter = NOTHING;
+
+        for (final T item : items) {
+            counter++;
+            System.out.println("#" + counter);
+            System.out.println(item.getTitle());
+            System.out.println();
         }
     }
 
@@ -156,9 +160,9 @@ public class BookStore {
      * Prints all novel titles in the collection in uppercase.
      */
     public void printAllTitles() {
-        validateNovelList(this.novels);
+        validateNovelList(this.items);
 
-        for (final Novel n : novels) {
+        for (final T n : this.items) {
             final String title;
             title = n.getTitle().toUpperCase();
             System.out.println(title);
@@ -171,9 +175,9 @@ public class BookStore {
      * @param word the word to search for in the title
      */
     public void printBookTitle(final String word) {
-        validateNovelList(this.novels);
+        validateNovelList(this.items);
 
-        for (final Novel n : novels) {
+        for (final T n : this.items) {
             final String title;
             final String search;
 
@@ -194,8 +198,8 @@ public class BookStore {
 
         titles = new ArrayList<>();
 
-        validateNovelList(this.novels);
-        for (final Novel n : novels) {
+        validateNovelList(this.items);
+        for (final T n : this.items) {
             titles.add(n.getTitle());
         }
 
@@ -211,36 +215,36 @@ public class BookStore {
      *
      * @param decade the starting year of the decade (e.g., 2000 for the 2000s)
      */
-    public void printGroupByDecade(final int decade) {
-        final int startDecade;
-        final int endDecade;
-
-        startDecade = decade;
-        endDecade = startDecade + END_DECADE;
-
-        validateNovelList(this.novels);
-
-        for (final Novel n : novels) {
-            if (n.getYearPublished() >= startDecade &&
-                n.getYearPublished() <= endDecade)
-            {
-                System.out.println(n);
-            }
-        }
-    }
+//    public void printGroupByDecade(final int decade) {
+//        final int startDecade;
+//        final int endDecade;
+//
+//        startDecade = decade;
+//        endDecade = startDecade + END_DECADE;
+//
+//        validateNovelList(this.items);
+//
+//        for (final T n : this.items) {
+//            if (n.getYearPublished() >= startDecade &&
+//                n.getYearPublished() <= endDecade)
+//            {
+//                System.out.println(n);
+//            }
+//        }
+//    }
 
     /**
      * Prints the novel with the longest title in the collection.
      */
     public void getLongest() {
         // need to re-assign longest title if found the new longest title
-        Novel longestTitle;
+        T longestTitle;
         longestTitle = null;
 
         // throw error if list of novels is null
-        validateNovelList(this.novels);
+        validateNovelList(this.items);
 
-        for (final Novel n : novels) {
+        for (final T n : this.items) {
             if(longestTitle == null){
                 longestTitle = n;
             } else {
@@ -264,15 +268,15 @@ public class BookStore {
      * @param year the year to check for
      * @return {@code true} if a novel was written in the specified year, {@code false} otherwise
      */
-    public boolean isThereABookWrittenIn(final int year) {
-        validateNovelList(this.novels);
-        for (final Novel n : novels) {
-            if(n != null && n.getYearPublished() == year) {
-                return true;
-            }
-        }
-        return false;
-    }
+//    public boolean isThereABookWrittenIn(final int year) {
+//        validateNovelList(this.items);
+//        for (final Novel n : novels) {
+//            if(n != null && n.getYearPublished() == year) {
+//                return true;
+//            }
+//        }
+//        return false;
+//    }
 
     /**
      * Returns the number of novels that contain the specified word in their title.
@@ -288,9 +292,13 @@ public class BookStore {
         counter = NOTHING;
         search = word.toLowerCase();
 
-        validateNovelList(this.novels);
-        for (final Novel n : novels) {
-            final String title = n.getTitle().toLowerCase();
+        validateNovelList(this.items);
+
+        for (final T n : items) {
+            final String title;
+
+            title = n.getTitle().toLowerCase();
+
             if (title.contains(search)) {
                 counter++;
             }
@@ -305,61 +313,62 @@ public class BookStore {
      * @param last  the end year (inclusive)
      * @return the percentage of novels written between the two years
      */
-    public double whichPercentWrittenBetween(final int first, final int last) {
-        // need to re-assign the counter
-        int counter;
-        final double output;
-
-        counter = NOTHING;
-
-        validateNovelList(this.novels);
-        for (final Novel n : novels) {
-            final int currentBookYearPublished;
-            currentBookYearPublished = n.getYearPublished();
-
-            if (currentBookYearPublished >= first &&
-                currentBookYearPublished <= last)
-            {
-                counter++;
-            }
-        }
-
-        output = (double) counter / novels.size() * MAX_PERCENTAGE;
-
-        return output;
-    }
+//    public double whichPercentWrittenBetween(final int first, final int last) {
+//        // need to re-assign the counter
+//        int counter;
+//        final double output;
+//
+//        counter = NOTHING;
+//
+//        validateNovelList(this.items);
+//        for (final Novel n : novels) {
+//            final int currentBookYearPublished;
+//            currentBookYearPublished = n.getYearPublished();
+//
+//            if (currentBookYearPublished >= first &&
+//                currentBookYearPublished <= last)
+//            {
+//                counter++;
+//            }
+//        }
+//
+//        output = (double) counter / novels.size() * MAX_PERCENTAGE;
+//
+//        return output;
+//    }
 
     /**
      * Returns the oldest novel in the collection based on the year of publication.
      *
      * @return the oldest novel
      */
-    public Novel getOldestBook() {
-        Novel oldestBook;
-
-        oldestBook = null;
-
-        validateNovelList(this.novels);
-        for (final Novel n : novels) {
-            final int thisYearPublished;
-            final int thatYearPublished;
-
-            thisYearPublished = n.getYearPublished();
-
-
-            if(oldestBook == null){
-                oldestBook = n;
-                continue;
-            }
-
-            thatYearPublished = oldestBook.getYearPublished();
-
-            if (thisYearPublished < thatYearPublished) {
-                oldestBook = n;
-            }
-        }
-        return oldestBook;
-    }
+//    public Novel getOldestBook() {
+//        Novel oldestBook;
+//
+//        oldestBook = null;
+//
+//        validateNovelList(this.items);
+//
+//        for (final Novel n : novels) {
+//            final int thisYearPublished;
+//            final int thatYearPublished;
+//
+//            thisYearPublished = n.getYearPublished();
+//
+//
+//            if(oldestBook == null){
+//                oldestBook = n;
+//                continue;
+//            }
+//
+//            thatYearPublished = oldestBook.getYearPublished();
+//
+//            if (thisYearPublished < thatYearPublished) {
+//                oldestBook = n;
+//            }
+//        }
+//        return oldestBook;
+//    }
 
     /**
      * Returns a list of novels whose titles have a length greater than or equal to the specified length.
@@ -367,13 +376,14 @@ public class BookStore {
      * @param titleLength the length of the title to match
      * @return a list of novels with titles of the specified length
      */
-    public List<Novel> getBooksThisLength(final int titleLength) {
-        final List<Novel> novelsWithSpecificLength;
+    public List<T> getBooksThisLength(final int titleLength) {
+        final List<T> novelsWithSpecificLength;
 
         novelsWithSpecificLength = new ArrayList<>();
 
-        validateNovelList(this.novels);
-        for (final Novel n : novels) {
+        validateNovelList(this.items);
+
+        for (final T n : this.items) {
             final int thisTitleLength;
 
             thisTitleLength = n.getTitle().length();
@@ -609,91 +619,91 @@ public class BookStore {
      *
      * @param args command-line arguments
      */
-    public static void main(final String[] args) {
-        final BookStore bookstore;
-        final Novel oldest;
-        final List<Novel> fifteenCharTitles;
-
-
-        bookstore = new BookStore("Classic Novels Collection");
-
-
-
-        System.out.println("Welcome to " + bookstore.getName());
-        // Division line
-        System.out.println("====================================");
-        System.out.println();
-
-
-        System.out.println("All Titles in UPPERCASE:");
-        bookstore.printAllTitles();
-
-        // Division line
-        System.out.println("====================================");
-        System.out.println();
-
-        System.out.println("\nBook Titles Containing 'the':");
-        bookstore.printBookTitle("the");
-
-
-        // Division line
-        System.out.println("====================================");
-        System.out.println();
-
-        System.out.println("\nAll Titles in Alphabetical Order:");
-        bookstore.printTitlesInAlphaOrder();
-
-        // Division line
-        System.out.println("====================================");
-        System.out.println();
-
-        System.out.println("\nBooks from the 2000s:");
-        bookstore.printGroupByDecade(2000);
-
-        // Division line
-        System.out.println("====================================");
-        System.out.println();
-
-        System.out.println("\nLongest Book Title:");
-        bookstore.getLongest();
-
-        // Division line
-        System.out.println("====================================");
-        System.out.println();
-
-
-        System.out.println("\nIs there a book written in 1950?");
-        System.out.println(bookstore.isThereABookWrittenIn(1950));
-        // Division line
-        System.out.println("====================================");
-        System.out.println();
-
-        System.out.println("\nHow many books contain 'heart'?");
-        System.out.println(bookstore.howManyBooksContain("heart"));
-
-        // Division line
-        System.out.println("====================================");
-        System.out.println();
-
-
-        System.out.println("\nPercentage of books written between 1940 and 1950:");
-        System.out.println(bookstore.whichPercentWrittenBetween(1940, 1950) + "%");
-
-        // Division line
-        System.out.println("====================================");
-        System.out.println();
-
-        System.out.println("\nOldest book:");
-        oldest = bookstore.getOldestBook();
-        System.out.println(oldest.getTitle() + " by " + oldest.getAuthorName() + ", " +
-                oldest.getYearPublished());
-
-        // Division Line
-        System.out.println("====================================");
-        System.out.println();
-
-        System.out.println("\nBooks with titles 15 characters long:");
-        fifteenCharTitles = bookstore.getBooksThisLength(15);
-        fifteenCharTitles.forEach(novel -> System.out.println(novel.getTitle()));
-    }
+//    public static void main(final String[] args) {
+//        final BookStore bookstore;
+//        final Novel oldest;
+//        final List<Novel> fifteenCharTitles;
+//
+//
+//        bookstore = new BookStore("Classic Novels Collection");
+//
+//
+//
+//        System.out.println("Welcome to " + bookstore.getName());
+//        // Division line
+//        System.out.println("====================================");
+//        System.out.println();
+//
+//
+//        System.out.println("All Titles in UPPERCASE:");
+//        bookstore.printAllTitles();
+//
+//        // Division line
+//        System.out.println("====================================");
+//        System.out.println();
+//
+//        System.out.println("\nBook Titles Containing 'the':");
+//        bookstore.printBookTitle("the");
+//
+//
+//        // Division line
+//        System.out.println("====================================");
+//        System.out.println();
+//
+//        System.out.println("\nAll Titles in Alphabetical Order:");
+//        bookstore.printTitlesInAlphaOrder();
+//
+//        // Division line
+//        System.out.println("====================================");
+//        System.out.println();
+//
+//        System.out.println("\nBooks from the 2000s:");
+//        bookstore.printGroupByDecade(2000);
+//
+//        // Division line
+//        System.out.println("====================================");
+//        System.out.println();
+//
+//        System.out.println("\nLongest Book Title:");
+//        bookstore.getLongest();
+//
+//        // Division line
+//        System.out.println("====================================");
+//        System.out.println();
+//
+//
+//        System.out.println("\nIs there a book written in 1950?");
+//        System.out.println(bookstore.isThereABookWrittenIn(1950));
+//        // Division line
+//        System.out.println("====================================");
+//        System.out.println();
+//
+//        System.out.println("\nHow many books contain 'heart'?");
+//        System.out.println(bookstore.howManyBooksContain("heart"));
+//
+//        // Division line
+//        System.out.println("====================================");
+//        System.out.println();
+//
+//
+//        System.out.println("\nPercentage of books written between 1940 and 1950:");
+//        System.out.println(bookstore.whichPercentWrittenBetween(1940, 1950) + "%");
+//
+//        // Division line
+//        System.out.println("====================================");
+//        System.out.println();
+//
+//        System.out.println("\nOldest book:");
+//        oldest = bookstore.getOldestBook();
+//        System.out.println(oldest.getTitle() + " by " + oldest.getAuthorName() + ", " +
+//                oldest.getYearPublished());
+//
+//        // Division Line
+//        System.out.println("====================================");
+//        System.out.println();
+//
+//        System.out.println("\nBooks with titles 15 characters long:");
+//        fifteenCharTitles = bookstore.getBooksThisLength(15);
+//        fifteenCharTitles.forEach(novel -> System.out.println(novel.getTitle()));
+//    }
 }

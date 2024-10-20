@@ -1,4 +1,5 @@
-abstract class Literature {
+public abstract class Literature {
+
     /**
      * Get title abstract method.
      */
