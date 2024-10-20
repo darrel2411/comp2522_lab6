@@ -13,7 +13,6 @@ public class Main {
        final Literature Novel;
        final Literature magazine;
 
-
        bookstore = new BookStore<>("Heaven");
        comic     = new ComicBook("Batman 1990");
        magazine  = new Magazine("Vogue");
@@ -27,6 +26,17 @@ public class Main {
         bookstore.addItem(Novel);
 
         bookstore.printItems();
+
+        // Nested classes
+        final BookStore.NovelStatistics stats;
+        final BookStore.BookStoreInfo bookStoreInfo;
+
+        stats = bookstore.new NovelStatistics();
+        bookStoreInfo = new BookStore.BookStoreInfo();
+
+        bookStoreInfo.displayInfo("Hello", 32);
+
+        System.out.println("The average length of the titles is: " + stats.averageTitleLength());
 
 
     }

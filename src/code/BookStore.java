@@ -177,17 +177,12 @@ public class BookStore <T extends Literature>
     public void printBookTitle(final String word) {
         validateNovelList(this.items);
 
-        for (final T n : this.items) {
-            final String title;
-            final String search;
-
-            title = n.getTitle().toLowerCase();
-            search = word.toLowerCase();
-
-            if (title.contains(search)) {
-                System.out.println(title);
+        items.forEach(book -> {
+            if(book.getTitle().contains(word)) {
+                System.out.println(book.getTitle());
             }
-        }
+
+        });
     }
 
     /**
@@ -198,16 +193,14 @@ public class BookStore <T extends Literature>
 
         titles = new ArrayList<>();
 
-        validateNovelList(this.items);
-        for (final T n : this.items) {
-            titles.add(n.getTitle());
-        }
+        items.forEach(book -> {
+            titles.add(book.getTitle());
+        });
 
-        Collections.sort(titles);
+        titles.sort(String::compareToIgnoreCase);
 
-        for (final String t : titles) {
-            System.out.println(t);
-        }
+        titles.forEach(System.out::println);
+
     }
 
     /**
