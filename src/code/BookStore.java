@@ -615,6 +615,37 @@ public class BookStore <T extends Literature>
     }
 
     /**
+     * It has a method that displays the name of the
+     * bookstore and number of books.
+     */
+    public static class BookStoreInfo{
+
+        public void displayInfo(final String storeName,
+                                final int itemCount)
+        {
+            System.out.println("Bookstore: " + storeName + "\n" +
+                               "Items: " + itemCount + "\n");
+        }
+    }
+
+    /**
+     * Provides a statistical analysis, such as calculating
+     * the average title length of the book type or find the most common
+     * publication year.
+     */
+    public class NovelStatistics{
+
+        public double averageTitleLength(){
+            int totalLength = NOTHING;
+            for(final T item: items){
+                totalLength += item.getTitle().length();
+            }
+
+            return (double) totalLength / items.size();
+        }
+    }
+
+    /**
      * The main method that demonstrates the functionality of the {@code BookStore} class.
      *
      * @param args command-line arguments
