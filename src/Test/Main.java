@@ -2,6 +2,15 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+
+/**
+ * It will create a Bookstore and test the methods
+ * inside the class.
+ *
+ * @author Manases
+ * @author Darrel
+ * @version 1.0
+ */
 public class Main {
 
     /**
@@ -76,6 +85,7 @@ public class Main {
             }
         });
 
+        // It will print the objects in the list
         for(final Literature item : items){
             System.out.println(item.getTitle());
         }

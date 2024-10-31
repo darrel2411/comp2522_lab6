@@ -137,7 +137,8 @@ public class BookStore <T extends Literature>
      * and them added it to the list.
      * @param novelCollection as a List
      */
-    public void addNovelsToCollection(List<? super Novel> novelCollection){
+    public void addNovelsToCollection(final List<? super Novel> novelCollection)
+    {
         for(final T item: this.items) {
             if(item instanceof Novel){
                 novelCollection.add((Novel)item);
@@ -171,7 +172,11 @@ public class BookStore <T extends Literature>
                 }
             }
         }
-        System.out.println(longestTitle.toString());
+
+        if(longestTitle != null){
+            System.out.println(longestTitle.toString());
+        }
+
     }
 
     /**
@@ -205,10 +210,10 @@ public class BookStore <T extends Literature>
     /**
      * Returns a list of novels whose titles have a length greater than or equal to the specified length.
      *
-     * @param titleLength the length of the title to match
+     * @param minTitleLength the length of the title to match
      * @return a list of novels with titles of the specified length
      */
-    public List<T> getBooksThisLength(final int titleLength) {
+    public List<T> getBooksThisLength(final int minTitleLength) {
         final List<T> novelsWithSpecificLength;
 
         novelsWithSpecificLength = new ArrayList<>();
@@ -220,7 +225,7 @@ public class BookStore <T extends Literature>
 
             thisTitleLength = n.getTitle().length();
 
-            if (thisTitleLength >= titleLength) {
+            if (thisTitleLength >= minTitleLength) {
                 novelsWithSpecificLength.add(n);
             }
         }
